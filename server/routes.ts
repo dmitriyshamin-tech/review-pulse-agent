@@ -699,5 +699,12 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     res.json(storage.listRuns(30));
   });
 
+  // ----- Telegram test -----
+  app.post("/api/telegram/test", async (_req: Request, res: Response) => {
+    const { sendMessage, buildDailyReport } = await import("./telegram");
+    await sendMessage(buildDailyReport());
+    res.json({ ok: true });
+  });
+
   return httpServer;
 }
