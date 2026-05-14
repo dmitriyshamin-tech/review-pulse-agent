@@ -4,6 +4,7 @@ import type { Request } from 'express';
 import rateLimit from "express-rate-limit";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
+import { startScheduler } from "./scheduler";
 import { createServer } from "node:http";
 
 const app = express();
@@ -74,6 +75,7 @@ app.use((req, res, next) => {
 
 (async () => {
   await registerRoutes(httpServer, app);
+  startScheduler();
 
   app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
